@@ -1,0 +1,1723 @@
+@import 'tailwindcss';
+
+@theme {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Fraunces', Georgia, Cambria, 'Times New Roman', serif;
+}
+
+:root {
+    /* Islamic Modern Core Palette */
+    --bg-canvas: #f8f6f0;
+    --card-surface: #ffffff;
+    --border-line: #dbe5e0;
+    --border-hover: #9ec2b4;
+    --border-focus: #065443;
+    --ink-primary: #0a231d;
+    --ink-secondary: #27433c;
+    --ink-muted: #526b63;
+
+    /* Emerald & Forest Tones */
+    --pri-dark: #04362b;
+    --pri-green: #065443;
+    --pri-light: #0d6854;
+    --emerald-accent: #059669;
+    --soft-green: #edf7f2;
+    --soft-green-hover: #dcf0e5;
+
+    /* Islamic Gold & Warm Accents */
+    --gold-primary: #c59b27;
+    --gold-dark: #977315;
+    --gold-light: #fbf5df;
+    --gold-border: #dfc888;
+    --gold-glow: rgba(197, 155, 39, 0.2);
+
+    /* Alerts & Signals */
+    --danger-red: #b91c1c;
+    --danger-soft: #fee2e2;
+    --danger-border: #fca5a5;
+
+    /* Elevation Shadows */
+    --shadow-subtle: 0 1px 3px rgba(6, 60, 48, 0.04), 0 1px 2px rgba(6, 60, 48, 0.02);
+    --shadow-card: 0 4px 16px rgba(6, 60, 48, 0.05), 0 1px 3px rgba(6, 60, 48, 0.03);
+    --shadow-hover: 0 10px 28px rgba(6, 60, 48, 0.09), 0 2px 6px rgba(6, 60, 48, 0.04);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-canvas);
+    color: var(--ink-primary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image:
+        radial-gradient(at 0% 0%, rgba(6, 84, 67, 0.035) 0px, transparent 45%),
+        radial-gradient(at 100% 100%, rgba(197, 155, 39, 0.04) 0px, transparent 50%);
+    background-attachment: fixed;
+}
+
+/* ==========================================================================
+   Header & Islamic Modern Brand
+   ========================================================================== */
+header.app-header {
+    background: linear-gradient(135deg, var(--pri-dark) 0%, #054839 50%, var(--pri-green) 100%);
+    color: #ffffff;
+    padding: 22px 24px;
+    border-bottom: 3.5px solid var(--gold-primary);
+    box-shadow: 0 8px 24px rgba(3, 60, 48, 0.16);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle Geometric Star Tessellation Texture Overlay */
+header.app-header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='48' height='48' viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24 0 L29 19 L48 24 L29 29 L24 48 L19 29 L0 24 L19 19 Z M24 9 L27 21 L39 24 L27 27 L24 39 L21 27 L9 24 L21 21 Z' fill='%23ffffff' fill-opacity='0.035' fill-rule='evenodd'/%3E%3C/svg%3E");
+    pointer-events: none;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.brand-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-icon-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+    display: grid;
+    place-items: center;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
+    border: 1.5px solid var(--gold-border);
+    color: var(--gold-light);
+}
+
+.brand-logo-img {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    flex-shrink: 0;
+    object-fit: cover;
+    background-color: #ffffff;
+    border: 2px solid var(--gold-border);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.brand-info small {
+    color: #fce8a9;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    font-size: 11px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brand-info small svg {
+    width: 10px;
+    height: 10px;
+    fill: var(--gold-primary);
+}
+
+.brand-info h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 3px 0 0;
+    line-height: 1.15;
+    color: #ffffff;
+    letter-spacing: -0.015em;
+}
+
+.brand-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #fdfaf2;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+/* ==========================================================================
+   Main Content Layout
+   ========================================================================== */
+main.main-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px 20px 54px;
+    flex: 1;
+}
+
+.page-grid-2col {
+    display: grid;
+    grid-template-columns: minmax(330px, 450px) 1fr;
+    gap: 28px;
+    align-items: start;
+}
+
+@media (max-width: 880px) {
+    .page-grid-2col {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Cards & Surfaces
+   ========================================================================== */
+.ui-card {
+    background-color: var(--card-surface);
+    border: 1px solid var(--border-line);
+    border-radius: 18px;
+    padding: 26px;
+    box-shadow: var(--shadow-card);
+    position: relative;
+}
+
+.ui-card h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink-primary);
+    margin: 0 0 6px;
+    line-height: 1.25;
+}
+
+.ui-card h3 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink-primary);
+    margin: 0 0 6px;
+}
+
+.ui-card p.card-desc {
+    color: var(--ink-muted);
+    font-size: 14px;
+    margin: 0 0 20px;
+}
+
+/* Decorative Gold Top Edge Accent for Priority Cards */
+.ui-card.gold-edge {
+    border-top: 4px solid var(--gold-primary);
+}
+
+/* ==========================================================================
+   Form Controls & Typography
+   ========================================================================== */
+.form-group {
+    margin-bottom: 16px;
+}
+
+label.form-label {
+    display: block;
+    font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink-secondary);
+    margin-bottom: 7px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 11px 15px;
+    border: 1.5px solid var(--border-line);
+    border-radius: 11px;
+    background-color: #ffffff;
+    color: var(--ink-primary);
+    font-family: inherit;
+    font-size: 14.5px;
+    transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-input:hover,
+.form-select:hover,
+.form-textarea:hover {
+    border-color: var(--border-hover);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--pri-green);
+    box-shadow: 0 0 0 3px rgba(6, 84, 67, 0.16);
+    background-color: #ffffff;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+}
+
+.input-row>* {
+    flex: 1;
+}
+
+.input-row>.col-sm {
+    flex: 0 0 120px;
+}
+
+/* ==========================================================================
+   Button System
+   ========================================================================== */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(180deg, var(--pri-light) 0%, var(--pri-green) 100%);
+    color: #ffffff;
+    border: 1px solid var(--pri-dark);
+    padding: 11px 22px;
+    border-radius: 11px;
+    font-weight: 600;
+    font-size: 14.5px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 2px 6px rgba(6, 84, 67, 0.2);
+    transition: all 0.18s ease;
+    min-height: 44px;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(180deg, var(--pri-green) 0%, var(--pri-dark) 100%);
+    box-shadow: 0 4px 12px rgba(6, 84, 67, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid var(--pri-green);
+    outline-offset: 2px;
+}
+
+.btn-primary.btn-full {
+    width: 100%;
+    margin-top: 18px;
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--soft-green);
+    color: var(--pri-green);
+    border: 1.5px solid rgba(6, 84, 67, 0.18);
+    padding: 10px 18px;
+    border-radius: 11px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    min-height: 44px;
+}
+
+.btn-secondary:hover {
+    background-color: var(--soft-green-hover);
+    border-color: var(--pri-green);
+    color: var(--pri-dark);
+}
+
+.btn-secondary:focus-visible {
+    outline: 2px solid var(--pri-green);
+    outline-offset: 2px;
+}
+
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: var(--danger-soft);
+    color: var(--danger-red);
+    border: 1px solid var(--danger-border);
+    padding: 7px 14px;
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-height: 38px;
+}
+
+.btn-danger:hover {
+    background-color: #fee2e2;
+    border-color: var(--danger-red);
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 9px;
+    min-height: 36px;
+}
+
+/* ==========================================================================
+   Badges, Tags, and Counter Pills
+   ========================================================================== */
+.pill-count {
+    background-color: var(--soft-green);
+    color: var(--pri-green);
+    border: 1px solid rgba(6, 84, 67, 0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.meta-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 6px;
+    background-color: #eef4f1;
+    color: var(--ink-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 4px;
+    border: 1px solid #dce8e3;
+}
+
+.tag-ziyadah {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    border-color: #bae6fd;
+}
+
+.tag-murojaah {
+    background-color: var(--gold-light);
+    color: var(--gold-dark);
+    border-color: var(--gold-border);
+}
+
+.tag-demo {
+    background-color: #fff7ed;
+    color: #c2410c;
+    border-color: #ffedd5;
+    font-size: 11px;
+}
+
+/* Predikat Setoran Labels */
+.predikat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: 1px solid transparent;
+}
+
+.predikat-mumtaz {
+    background-color: #d1fae5;
+    color: #065f46;
+    border-color: #a7f3d0;
+}
+
+.predikat-jayyid-jiddan {
+    background-color: #cffafe;
+    color: #0e7490;
+    border-color: #a5f3fc;
+}
+
+.predikat-jayyid {
+    background-color: #fef9c3;
+    color: #854d0e;
+    border-color: #fef08a;
+}
+
+.predikat-maqbul {
+    background-color: #ffedd5;
+    color: #c2410c;
+    border-color: #fed7aa;
+}
+
+.predikat-dhaif {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-color: #fca5a5;
+}
+
+/* SVG Vector Icon Helpers */
+.svg-icon {
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    stroke-width: 2;
+}
+
+.svg-icon-sm {
+    width: 15px;
+    height: 15px;
+}
+
+.svg-icon-lg {
+    width: 22px;
+    height: 22px;
+}
+
+/* ==========================================================================
+   Riwayat Setoran Cards
+   ========================================================================== */
+.history-item {
+    border: 1.5px solid var(--border-line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-top: 12px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    box-shadow: var(--shadow-subtle);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.history-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: var(--pri-green);
+}
+
+.history-item:hover {
+    border-color: var(--border-hover);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-1.5px);
+}
+
+.history-name {
+    font-weight: 700;
+    font-size: 15.5px;
+    color: var(--ink-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.history-sub {
+    color: var(--ink-muted);
+    font-size: 13px;
+    margin-top: 5px;
+    line-height: 1.45;
+}
+
+.score-display-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--soft-green);
+    border: 1.5px solid rgba(6, 84, 67, 0.16);
+    border-radius: 12px;
+    padding: 6px 12px;
+    min-width: 68px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.score-val {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--pri-green);
+    line-height: 1;
+}
+
+.score-predikat {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 3px;
+    color: var(--pri-dark);
+}
+
+/* ==========================================================================
+   Segmented Navigation Tabs (Admin Area)
+   ========================================================================== */
+.nav-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    background-color: #edf3f0;
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid var(--border-line);
+}
+
+.tab-btn {
+    border: none;
+    background-color: transparent;
+    color: var(--ink-secondary);
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 13.5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.18s ease;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-btn:hover {
+    color: var(--pri-green);
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.tab-btn.active {
+    background: linear-gradient(180deg, var(--pri-green) 0%, var(--pri-dark) 100%);
+    color: #ffffff;
+    box-shadow: 0 3px 8px rgba(6, 84, 67, 0.25);
+    font-weight: 700;
+}
+
+.tab-btn.active svg {
+    stroke: var(--gold-light);
+}
+
+.tab-btn:focus-visible {
+    outline: 2px solid var(--pri-green);
+    outline-offset: 2px;
+}
+
+/* Sub-Tab Switcher (e.g. Siswa Manual vs Impor) */
+.subtab-switcher {
+    display: inline-flex;
+    background-color: #edf3f0;
+    padding: 4px;
+    border-radius: 11px;
+    border: 1px solid var(--border-line);
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.subtab-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink-secondary);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.subtab-btn:hover {
+    color: var(--pri-green);
+}
+
+.subtab-btn.active {
+    background-color: #ffffff;
+    color: var(--pri-green);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    font-weight: 700;
+}
+
+/* Interactive Live Evaluation Card */
+.eval-live-card {
+    background: #fafcfb;
+    border: 1.5px dashed var(--border-line);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: -6px;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+}
+
+/* Student Avatar Medallion */
+.student-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--soft-green), #d6efe2);
+    color: var(--pri-green);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 18px;
+    border: 1px solid rgba(6, 84, 67, 0.15);
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Dashboard Statistics Row
+   ========================================================================== */
+.stats-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.stat-box {
+    flex: 1;
+    min-width: 170px;
+    background: #ffffff;
+    border: 1.5px solid var(--border-line);
+    border-top: 4px solid var(--pri-green);
+    padding: 18px 22px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-subtle);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.stat-box:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+}
+
+.stat-box.stat-gold {
+    border-top-color: var(--gold-primary);
+}
+
+.stat-box.stat-cyan {
+    border-top-color: #0284c7;
+}
+
+.stat-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background-color: var(--soft-green);
+    color: var(--pri-green);
+}
+
+.stat-box.stat-cyan .stat-icon-wrap {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+.stat-box.stat-gold .stat-icon-wrap {
+    background-color: var(--gold-light);
+    color: var(--gold-dark);
+}
+
+.stat-box b {
+    display: block;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px;
+    color: var(--ink-primary);
+    line-height: 1.1;
+    margin-bottom: 3px;
+}
+
+.stat-box span {
+    font-size: 13px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    line-height: 1.35;
+    display: block;
+}
+
+/* ==========================================================================
+   Filter Toolbar
+   ========================================================================== */
+.filter-toolbar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+    background-color: #f6faf8;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid var(--border-line);
+}
+
+.filter-toolbar>* {
+    flex: 1;
+    min-width: 150px;
+}
+
+.filter-toolbar>.btn-action {
+    flex: 0 0 auto;
+}
+
+/* ==========================================================================
+   Data Table
+   ========================================================================== */
+.table-responsive {
+    overflow-x: auto;
+    border: 1.5px solid var(--border-line);
+    border-radius: 14px;
+    box-shadow: var(--shadow-subtle);
+}
+
+table.data-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    min-width: 820px;
+    background-color: #ffffff;
+}
+
+table.data-table th,
+table.data-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border-line);
+    text-align: left;
+}
+
+table.data-table th {
+    background-color: #f1f7f4;
+    color: var(--pri-green);
+    font-weight: 700;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid var(--border-line);
+}
+
+table.data-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+table.data-table tbody tr:hover {
+    background-color: #f8fbf9;
+}
+
+table.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   Modals & Overlays
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(14, 39, 33, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-container {
+    background-color: var(--card-surface);
+    width: 100%;
+    max-width: 480px;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+    border: 1.5px solid var(--border-line);
+    animation: modalPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPopIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.modal-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 21px;
+    margin: 0 0 8px;
+    color: var(--ink-primary);
+}
+
+/* ==========================================================================
+   Alerts & Notifications
+   ========================================================================== */
+.alert-box {
+    padding: 13px 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+}
+
+.alert-success {
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1.5px solid #a7f3d0;
+}
+
+.alert-danger {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1.5px solid #fecaca;
+}
+
+#global-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(180deg, var(--pri-green) 0%, var(--pri-dark) 100%);
+    color: #ffffff;
+    padding: 11px 24px;
+    border-radius: 30px;
+    box-shadow: 0 8px 24px rgba(3, 60, 48, 0.35);
+    border: 1.5px solid var(--gold-border);
+    font-weight: 600;
+    font-size: 14.5px;
+    display: none;
+    z-index: 1100;
+}
+
+/* Empty State */
+.empty-state {
+    border: 2px dashed var(--border-line);
+    border-radius: 16px;
+    padding: 42px 24px;
+    text-align: center;
+    color: var(--ink-muted);
+    background-color: #fbfdfc;
+}
+
+.empty-state h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    color: var(--ink-primary);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+footer.app-footer {
+    display: none;
+}
+
+/* ==========================================================================
+   Admin Live Clock & Header Status
+   ========================================================================== */
+.admin-live-datetime {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(4, 54, 43, 0.45);
+    border: 1.5px solid var(--gold-border);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    color: #fefce8;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.admin-live-datetime .live-divider {
+    color: var(--gold-primary);
+    opacity: 0.8;
+}
+
+.admin-live-datetime .live-time {
+    color: #fde047;
+    font-variant-numeric: tabular-nums;
+    font-family: 'Plus Jakarta Sans', monospace;
+    font-weight: 700;
+}
+
+.header-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.header-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+}
+
+.header-btn-gold {
+    background: linear-gradient(135deg, #d4af37 0%, var(--gold-primary) 100%);
+    color: #04362b;
+    border-color: var(--gold-border);
+    box-shadow: 0 2px 8px rgba(197, 155, 39, 0.25);
+}
+
+.header-btn-gold:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(197, 155, 39, 0.35);
+}
+
+.header-btn-ghost {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+.header-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.header-btn-danger {
+    background: rgba(185, 28, 28, 0.18);
+    color: #fecaca;
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.header-btn-danger:hover {
+    background: rgba(185, 28, 28, 0.35);
+    color: #ffffff;
+}
+
+/* Mobile Navigation Drawer & Hamburger Trigger (Hidden on Desktop) */
+.mobile-menu-toggle {
+    display: none;
+}
+
+.mobile-only-admin-nav {
+    display: none;
+}
+
+/* Admin Welcome Banner on Dashboard */
+.admin-welcome-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #054839 0%, var(--pri-green) 60%, #08614e 100%);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    color: #ffffff;
+    border: 1.5px solid var(--gold-border);
+    box-shadow: 0 8px 24px rgba(6, 84, 67, 0.16);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-welcome-banner::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 200px;
+    height: 100%;
+    background-image: radial-gradient(circle at 100% 100%, rgba(197, 155, 39, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.admin-welcome-text {
+    flex: 1;
+    min-width: 260px;
+}
+
+.admin-welcome-eyebrow {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--gold-border);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.admin-welcome-heading {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 24px;
+    margin: 0 0 8px;
+    color: #ffffff;
+    line-height: 1.25;
+}
+
+.admin-welcome-desc {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 600px;
+}
+
+.admin-datetime-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(223, 200, 136, 0.4);
+    padding: 16px 22px;
+    border-radius: 14px;
+    min-width: 230px;
+    text-align: right;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+}
+
+.datetime-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #fce8a9;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+}
+
+.datetime-card-day {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.datetime-card-date {
+    font-size: 13.5px;
+    color: #fdf5df;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.datetime-card-time {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fde047;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    font-family: 'Plus Jakarta Sans', monospace;
+}
+
+.datetime-card-time small {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fce8a9;
+    margin-left: 2px;
+}
+
+@media (max-width: 768px) {
+    header.app-header {
+        padding: 16px;
+    }
+
+    .header-container {
+        flex-wrap: wrap;
+        gap: 12px;
+        position: relative;
+    }
+
+    .brand-wrapper {
+        gap: 12px;
+    }
+
+    .brand-icon-box,
+    .brand-logo-img {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+    }
+
+    .brand-info small {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+    }
+
+    .brand-info h1 {
+        font-size: 19px;
+    }
+
+    /* Mobile hamburger button on admin page */
+    .mobile-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 12px;
+        min-height: 44px;
+        min-width: 44px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1.5px solid var(--gold-border);
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-menu-toggle:hover,
+    .mobile-menu-toggle.is-active {
+        background: rgba(197, 155, 39, 0.25);
+        border-color: #fce8a9;
+    }
+
+    .hamburger-box {
+        width: 20px;
+        height: 16px;
+        display: inline-block;
+        position: relative;
+    }
+
+    .hamburger-inner,
+    .hamburger-inner::before,
+    .hamburger-inner::after {
+        width: 20px;
+        height: 2px;
+        background-color: currentColor;
+        border-radius: 2px;
+        position: absolute;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .hamburger-inner {
+        top: 7px;
+    }
+
+    .hamburger-inner::before {
+        content: "";
+        top: -6px;
+    }
+
+    .hamburger-inner::after {
+        content: "";
+        bottom: -6px;
+    }
+
+    .mobile-menu-toggle.is-active .hamburger-inner {
+        background-color: transparent;
+    }
+
+    .mobile-menu-toggle.is-active .hamburger-inner::before {
+        transform: translateY(6px) rotate(45deg);
+    }
+
+    .mobile-menu-toggle.is-active .hamburger-inner::after {
+        transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Header Status Live Datetime on Mobile */
+    .header-status {
+        display: flex;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .header-status .admin-live-datetime {
+        font-size: 11.5px;
+        padding: 4px 10px;
+    }
+
+    /* On Admin pages: header-status has admin actions, collapses into mobile drawer */
+    .header-status.has-admin-actions {
+        display: none;
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 0;
+        right: 0;
+        background: linear-gradient(145deg, #04362b 0%, #065443 100%);
+        border: 1.5px solid var(--gold-border);
+        border-radius: 14px;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+        padding: 16px;
+        z-index: 1000;
+        animation: mobileMenuFadeIn 0.2s ease-out;
+    }
+
+    .header-status.has-admin-actions.is-open {
+        display: block;
+    }
+
+    @keyframes mobileMenuFadeIn {
+        from { opacity: 0; transform: translateY(-8px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header-status.has-admin-actions .header-nav-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .header-status.has-admin-actions .admin-live-datetime {
+        width: 100%;
+        justify-content: center;
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .header-status.has-admin-actions .header-action-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px 14px;
+        font-size: 13.5px;
+        min-height: 44px;
+    }
+
+    .mobile-only-admin-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding: 10px 0;
+        border-top: 1px solid rgba(223, 200, 136, 0.2);
+        border-bottom: 1px solid rgba(223, 200, 136, 0.2);
+        margin: 4px 0;
+    }
+
+    .mobile-menu-heading {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fce8a9;
+        font-weight: 700;
+        padding: 0 4px 4px;
+    }
+
+    .mobile-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 13.5px;
+        font-weight: 600;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        transition: all 0.15s ease;
+        min-height: 44px;
+    }
+
+    .mobile-menu-item:hover,
+    .mobile-menu-item.active {
+        background: rgba(197, 155, 39, 0.25);
+        border-color: var(--gold-border);
+        color: #fefce8;
+    }
+
+    .admin-welcome-banner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px;
+    }
+
+    .admin-datetime-card {
+        text-align: left;
+        width: 100%;
+    }
+
+    .datetime-card-header {
+        justify-content: flex-start;
+    }
+}
+
+/* ==========================================================================
+   Pendamping Page Header Banner & Live Datetime
+   ========================================================================== */
+.pendamping-header-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, #04362b 0%, #065443 60%, #0a6b56 100%);
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    color: #ffffff;
+    border: 1.5px solid var(--gold-border);
+    box-shadow: 0 6px 20px rgba(6, 84, 67, 0.14);
+    position: relative;
+    overflow: hidden;
+}
+
+.pendamping-header-banner::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    background-image: radial-gradient(circle at 100% 0%, rgba(197, 155, 39, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.pendamping-banner-left {
+    flex: 1;
+    min-width: 260px;
+}
+
+.pendamping-banner-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(197, 155, 39, 0.2);
+    border: 1px solid var(--gold-border);
+    color: #fce8a9;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.pendamping-banner-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 22px;
+    margin: 0 0 6px;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.pendamping-banner-sub {
+    margin: 0;
+    font-size: 13.5px;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 580px;
+    line-height: 1.5;
+}
+
+.pendamping-datetime-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(223, 200, 136, 0.45);
+    padding: 16px 22px;
+    border-radius: 14px;
+    min-width: 230px;
+    text-align: right;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+    .pendamping-header-banner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px 20px;
+    }
+
+    .pendamping-datetime-box {
+        text-align: left;
+        width: 100%;
+    }
+}
+
+/* ==========================================================================
+   Al-Qur'an Explorer & Digital Mushaf Styles (Halaman Pendamping)
+   ========================================================================== */
+.quran-btn-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #065443 0%, #033c30 100%);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1.5px solid var(--gold-border);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(6, 84, 67, 0.18);
+    transition: all 0.2s ease;
+}
+
+.quran-btn-trigger:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #0a6b56 0%, #065443 100%);
+    box-shadow: 0 4px 14px rgba(6, 84, 67, 0.28);
+}
+
+.quran-surah-preview-card {
+    background: #fbfdfc;
+    border: 1.5px solid var(--border-line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: all 0.2s ease;
+}
+
+.quran-surah-preview-card:hover {
+    border-color: var(--border-hover);
+    background-color: #f4faf6;
+}
+
+.quran-arabic-title {
+    font-family: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
+    font-size: 24px;
+    color: var(--pri-green);
+    line-height: 1.2;
+    direction: rtl;
+}
+
+/* Modal Large Quran Viewer */
+.modal-quran-container {
+    background-color: var(--card-surface);
+    width: 100%;
+    max-width: 960px;
+    max-height: 90vh;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    border: 2px solid var(--gold-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.quran-modal-header {
+    background: linear-gradient(135deg, var(--pri-dark) 0%, var(--pri-green) 100%);
+    color: #ffffff;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 3px solid var(--gold-primary);
+    flex-shrink: 0;
+}
+
+.quran-modal-body {
+    padding: 20px 24px;
+    overflow-y: auto;
+    flex: 1;
+    background-color: #fcfbfa;
+}
+
+.quran-search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.quran-filter-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.quran-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-weight: 600;
+    border: 1.5px solid var(--border-line);
+    background: #ffffff;
+    color: var(--ink-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.quran-chip:hover,
+.quran-chip.active {
+    background: var(--soft-green);
+    border-color: var(--pri-green);
+    color: var(--pri-green);
+}
+
+.quran-surah-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.quran-surah-card {
+    background: #ffffff;
+    border: 1.5px solid var(--border-line);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.quran-surah-card:hover {
+    border-color: var(--gold-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(6, 84, 67, 0.1);
+    background: #fafdfb;
+}
+
+.quran-num-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--soft-green);
+    color: var(--pri-green);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 13.5px;
+    flex-shrink: 0;
+    border: 1px solid rgba(6, 84, 67, 0.15);
+}
+
+.quran-ayah-item {
+    background: #ffffff;
+    border: 1.5px solid var(--border-line);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.quran-ayah-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-line);
+}
+
+.quran-arabic-text {
+    font-family: 'Amiri', 'Traditional Arabic', 'Scheherazade New', serif;
+    font-size: 28px;
+    line-height: 2.2;
+    direction: rtl;
+    text-align: right;
+    color: #0b3d32;
+    margin: 16px 0;
+    word-spacing: 2px;
+}
+
+.quran-latin-text {
+    font-size: 14.5px;
+    font-style: italic;
+    color: #0d6854;
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.quran-translation-text {
+    font-size: 14px;
+    color: var(--ink-secondary);
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   Revamped Login Page Styles
+   ========================================================================== */
+.login-page-container {
+    max-width: 460px;
+    margin: 36px auto 24px;
+}
+
+.input-password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-password-wrapper .form-input {
+    padding-right: 44px;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+    padding: 6px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+}
+
+.btn-toggle-password:hover {
+    color: var(--pri-green);
+    background: var(--soft-green);
+}

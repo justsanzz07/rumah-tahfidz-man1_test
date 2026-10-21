@@ -1,0 +1,452 @@
+================================================================================
+TUTORIAL LENGKAP PENGEMBANGAN APLIKASI WEB
+LAPORAN RUMAH TAHFIDZ - MAN 1 PROBOLINGGO
+Menggunakan Laravel 12, MySQL (Laragon), Blade, dan Prinsip Desain AntiSlop
+================================================================================
+
+Dibuat oleh: Senior Full-Stack Developer & Software Engineer
+Target Proyek: c:\laragon\www\tessting
+Basis Data: MySQL (rumah_tahfidz_man1)
+Teknologi: PHP 8.4+, Laravel 12, Tailwind CSS, Vite, Vanilla JS, Blade
+
+
+--------------------------------------------------------------------------------
+DAFTAR ISI
+--------------------------------------------------------------------------------
+1. Ringkasan & Analisis Kode Referensi Awal
+2. Penerapan Standar AntiSlop & Arah Desain (DESIGN.md)
+3. Persiapan Lingkungan & Inisialisasi Proyek Laravel 12
+4. Konfigurasi Basis Data MySQL di Laragon
+5. Pembuatan Struktur Database (Migrasi & Model Eloquent)
+6. Helper Master Data 114 Surah Al-Qur'an
+7. Database Seeder & Penanganan Data Demonstrasi Awal
+8. Validasi Input Sisi Server (Form Requests)
+9. Sistem Keamanan, Middleware, & Autentikasi Admin
+10. Pembuatan Controllers (Logika Bisnis Petugas & Admin)
+11. Konfigurasi Routing Aplikasi (routes/web.php)
+12. Pembangunan Tampilan UI/UX (CSS, Tipografi, & Blade Views)
+13. Kompilasi Aset Frontend dengan Vite
+14. Pengujian Otomatis (PHPUnit) & Formatter Kode (Laravel Pint)
+15. Panduan Menjalankan dan Menggunakan Aplikasi
+
+
+================================================================================
+LANGKAH 1: RINGKASAN & ANALISIS KODE REFERENSI AWAL
+================================================================================
+
+Proyek ini diawali dari file referensi "Laporan Rumah Tahfidz.html" yang merupakan
+aplikasi satu halaman (SPA) berbasis JavaScript murni dan localStorage.
+
+Temuan Audit Masalah pada Kode Lama:
+1. Penyimpanan Lokal: Data hanya tersimpan di browser satu perangkat. Jika petugas
+   menggunakan smartphone dan admin menggunakan laptop, data tidak terhubung.
+2. Keamanan Rendah: Otentikasi admin hanya menggunakan validasi PIN JavaScript
+   (PIN="admin123") yang tersimpan telanjang dan mudah dimanipulasi melalui console.
+3. Integritas Relasi Lemah: Data siswa dan petugas pada laporan hanya berupa teks string,
+   bukan ID relasional. Jika ada siswa dengan nama sama atau diedit, riwayat menjadi rancu.
+4. Pelanggaran Standar Desain AntiSlop: Menggunakan karakter em dash (—) pada label teks,
+   tidak memiliki penanganan aksesibilitas keyboard (Escape pada modal), dan tidak ada
+   validasi numerik nilai yang ketat.
+
+Solusi:
+Mengembangkan ulang menjadi aplikasi Full-Stack terpusat berbasis Laravel 12 dengan
+arsitektur MVC, database MySQL relasional, sistem otentikasi sesi aman, dan tampilan
+Clean Clinical Dashboard dengan sentuhan Islamic Modern.
+
+
+================================================================================
+LANGKAH 2: PENERAPAN STANDAR ANTISLOP & ARAH DESAIN (DESIGN.md)
+================================================================================
+
+Sebelum menulis kode tampilan, standar AntiSlop diterapkan dengan membuat file
+panduan desain "DESIGN.md" di akar direktori:
+
+A. Karakteristik Desain (Dials):
+   - ENERGY: 2 (Tenang, elegan, profesional, bernuansa islami modern).
+   - RHYTHM: 2 (Keseimbangan terstruktur antara formulir input dan tabel data).
+   - MOTION: 1 (Transisi halus pada interaksi aktif; tanpa animasi berputar tanpa henti).
+
+B. Palet Warna Terarah:
+   - Hijau Tua Utama (Primary): #06604d
+   - Hijau Zamrud Aksen: #0b7a62
+   - Latar Kanvas (Background): #faf7f0 (Krem lembut nyaman di mata, bukan putih silau)
+   - Permukaan Kartu (Card): #ffffff dengan garis pembatas halus #d8e6e0
+   - Teks Utama (Ink): #12302a (Kontras tinggi, lolos standar WCAG AA 4.5:1)
+   - Teks Sekunder (Muted): #4d635c
+   - Peringatan / Hapus (Danger): #b3382c
+
+C. Tipografi:
+   - Serif berkarakter: "Fraunces" untuk judul brand, header kartu, dan display nilai.
+   - Sans-serif legibilitas tinggi: "Plus Jakarta Sans" untuk formulir, tabel, dan label.
+
+D. Aturan Kepatuhan AntiSlop:
+   - R-02: Bebas karakter em dash (—) di seluruh antarmuka.
+   - R-03: Tata letak responsif desktop dan smartphone (target ketuk minimal 44px).
+   - R-08 & R-09: Tanpa panah tombol dekoratif sembarangan dan tanpa badge kapsul klise.
+   - R-17 & R-36: Data demonstrasi awal ditandai secara transparan ("Demo") dan
+     disediakan tombol pembersihan data dummy.
+   - R-25: Seluruh kombinasi warna lulus uji kontras WCAG AA.
+   - R-27: Menyediakan 3 status UI (data terisi, kondisi kosong / empty state, dan feedback loading/error).
+   - R-32: Aksesibilitas keyboard penuh (Tab teratur dan tombol Escape untuk menutup modal).
+
+
+================================================================================
+LANGKAH 3: PERSIAPAN LINGKUNGAN & INISIALISASI PROYEK LARAVEL 12
+================================================================================
+
+1. Memeriksa versi PHP dan Composer di Laragon:
+   $ php -v         -> PHP 8.4.5 (cli)
+   $ composer -V    -> Composer 2.9.5
+   $ node -v        -> v24.12.0
+   $ npm -v         -> 11.6.2
+
+2. Menginisialisasi proyek Laravel 12 di direktori kerja (c:\laragon\www\tessting):
+   $ composer create-project laravel/laravel . --prefer-dist --no-interaction
+
+3. Memasang Laravel Boost untuk pedoman agent dan integrasi panduan:
+   $ composer require laravel/boost --dev --no-interaction
+   $ php artisan boost:install
+
+
+================================================================================
+LANGKAH 4: KONFIGURASI BASIS DATA MYSQL DI LARAGON
+================================================================================
+
+1. Membuat database baru khusus aplikasi di MySQL Laragon:
+   $ mysql -u root -e "CREATE DATABASE IF NOT EXISTS rumah_tahfidz_man1 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+2. Menyesuaikan konfigurasi file ".env":
+   -----------------------------------------------------------------------------
+   APP_NAME="Laporan Rumah Tahfidz"
+   APP_ENV=local
+   APP_DEBUG=true
+   APP_URL=http://localhost:8000
+   APP_LOCALE=id
+   APP_FALLBACK_LOCALE=id
+
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=rumah_tahfidz_man1
+   DB_USERNAME=root
+   DB_PASSWORD=
+   -----------------------------------------------------------------------------
+
+
+================================================================================
+LANGKAH 5: PEMBUATAN STRUKTUR DATABASE (MIGRASI & MODEL ELOQUENT)
+================================================================================
+
+Membuat Model, Migration, Factory, dan Seeder:
+$ php artisan make:model Petugas -mfs
+$ php artisan make:model Siswa -mfs
+$ php artisan make:model LaporanSetoran -mfs
+$ php artisan make:migration add_role_to_users_table --table=users
+
+Penjelasan Struktur Tabel:
+1. Tabel "petugas":
+   - id: Primary Key (bigint unsigned)
+   - nama: string
+   - is_active: boolean (default true)
+   - timestamps
+
+2. Tabel "siswas":
+   - id: Primary Key (bigint unsigned)
+   - nama: string
+   - kelas: string (contoh: "X-1", "XI-2")
+   - jurusan: string nullable ("MIPA", "IPS", "Keagamaan", "Bahasa")
+   - tahun_ajaran: string (contoh: "2026/2027")
+   - timestamps
+
+3. Tabel "laporan_setorans":
+   - id: Primary Key (bigint unsigned)
+   - waktu_setoran: datetime
+   - petugas_id: foreignId constrained to 'petugas', nullOnDelete
+   - nama_petugas: string (snapshot nama petugas)
+   - siswa_id: foreignId constrained to 'siswas', nullOnDelete
+   - nama_siswa: string (snapshot nama siswa)
+   - kelas: string
+   - jurusan: string nullable
+   - tahun_ajaran: string
+   - kategori: string ("Ziyadah" atau "Murojaah")
+   - surah: string (contoh: "1. Al-Fatihah", "78. An-Naba")
+   - ayat: string (contoh: "1-10")
+   - nilai: string (skor 0-100)
+   - catatan: text nullable
+   - timestamps
+
+4. Modifikasi Tabel "users":
+   - Menambahkan kolom "role" string default 'petugas'.
+
+Menjalankan migrasi database:
+$ php artisan migrate
+
+
+================================================================================
+LANGKAH 6: HELPER MASTER DATA 114 SURAH AL-QUR'AN
+================================================================================
+
+Membuat class pembantu khusus di "app/Support/Quran.php" untuk menyediakan data
+resmi yang konsisten di seluruh aplikasi:
+- Daftar lengkap 114 Surah Al-Qur'an berurutan (dari 1. Al-Fatihah hingga 114. An-Nas).
+- Kategori setoran yang sah: ['Ziyadah', 'Murojaah'].
+- Jurusan di MAN 1 Probolinggo: ['MIPA', 'IPS', 'Keagamaan', 'Bahasa'].
+
+
+================================================================================
+LANGKAH 7: DATABASE SEEDER & DATA DEMONSTRASI AWAL
+================================================================================
+
+Mengisi data awal di "database/seeders/DatabaseSeeder.php":
+1. Akun Admin:
+   - Nama: Administrator Tahfidz MAN 1
+   - Email: admin@man1probolinggo.sch.id
+   - Password: Hash bcrypt dari "admin123"
+   - Role: admin
+2. Data Petugas Awal:
+   - Ustadz Abdullah
+   - Ustadzah Fatimah
+   - Ustadz Hasan
+3. Data Siswa Awal:
+   - 12 siswa tersebar di kelas X-1, X-2, XI-1, XI-2, XII-1, XII-2 dari jurusan
+     MIPA, IPS, Keagamaan, dan Bahasa.
+4. Contoh Data Riwayat Setoran Awal:
+   - Diberikan catatan transparan "Data demonstrasi awal" agar pengguna dapat
+     membedakan data asli dan contoh.
+
+Menjalankan seeder:
+$ php artisan db:seed
+
+
+================================================================================
+LANGKAH 8: VALIDASI INPUT SISI SERVER (FORM REQUESTS)
+================================================================================
+
+Menjamin keamanan data dengan membuat 4 Form Request tersendiri di "app/Http/Requests/":
+1. StoreSetoranRequest.php:
+   - Validasi waktu_setoran, petugas_id (wajib ada di database), siswa_id, kategori
+     (in:Ziyadah,Murojaah), surah (max:255), ayat (max:100), nilai (numeric 0-100).
+   - Pesan error dalam Bahasa Indonesia yang informatif.
+2. StoreSiswaRequest.php:
+   - Validasi nama, kelas, jurusan (validasi opsi resmi), tahun_ajaran.
+3. UpdateSiswaRequest.php:
+   - Validasi saat mengubah data siswa.
+4. StorePetugasRequest.php:
+   - Validasi nama petugas.
+
+
+================================================================================
+LANGKAH 9: SISTEM KEAMANAN, MIDDLEWARE, & AUTENTIKASI ADMIN
+================================================================================
+
+1. Middleware Otorisasi "EnsureAdmin" (app/Http/Middleware/EnsureAdmin.php):
+   - Memeriksa apakah pengguna telah terautentikasi dan memiliki role 'admin'.
+   - Menolak akses tidak sah dengan kode 403 atau pengalihan ke halaman login.
+   - Didaftarkan sebagai alias 'admin' di "bootstrap/app.php".
+
+2. Controller Autentikasi "AuthController" (app/Http/Controllers/Auth/AuthController.php):
+   - Mendukung login cepat menggunakan PIN "admin123" (sesuai kemudahan kode lama).
+   - Mendukung login lengkap menggunakan Email dan Password terenkripsi.
+   - Menggunakan session regeneration untuk mencegah serangan Session Fixation.
+   - Method logout aman yang memvalidasi token CSRF dan menghancurkan sesi.
+
+
+================================================================================
+LANGKAH 10: PEMBUATAN CONTROLLERS (LOGIKA BISNIS)
+================================================================================
+
+1. App\Http\Controllers\Petugas\SetoranController:
+   - index(): Menampilkan formulir input, daftar surah 114, daftar petugas aktif,
+     daftar kelas, dan riwayat setoran terbaru (dengan filter pencarian).
+   - store(): Menyimpan setoran hafalan baru ke database MySQL, menyimpan snapshot
+     nama siswa & petugas, serta mengembalikan respon instan (dukungan AJAX).
+   - getSiswa(): Endpoint JSON untuk mengambil siswa berdasarkan kelas secara dinamis.
+
+2. App\Http\Controllers\Admin\DashboardController:
+   - index(): Menampilkan tabel rekapitulasi lengkap, filter tahun ajaran, filter kelas,
+     filter kategori, pencarian, dan statistik ringkas (Total, Ziyadah, Murojaah).
+   - exportCsv(): Menghasilkan berkas CSV setoran yang dilengkapi UTF-8 BOM (\xEF\xBB\xBF)
+     sehingga dapat dibuka secara sempurna di Microsoft Excel tanpa masalah encoding.
+   - destroy(): Menghapus laporan setoran tertentu.
+   - clearDemo(): Menghapus seluruh data demonstrasi awal dalam satu kali klik.
+
+3. App\Http\Controllers\Admin\SiswaController:
+   - index(): Menampilkan daftar siswa dengan pagination dan filter kelas/jurusan/tahun.
+   - store() & update() & destroy(): Operasi CRUD siswa.
+   - import(): Mendukung impor massal dari unggahan berkas CSV maupun tempelan teks.
+   - downloadTemplate(): Menyediakan unduhan templat CSV berformat rapi.
+
+4. App\Http\Controllers\Admin\PetugasController:
+   - index(): Menampilkan daftar petugas beserta akumulasi jumlah setoran yang disimak.
+   - store() & update() & destroy(): Operasi CRUD petugas.
+
+
+================================================================================
+LANGKAH 11: KONFIGURASI ROUTING APLIKASI (routes/web.php)
+================================================================================
+
+Mendefinisikan 20 rute terstruktur dan terproteksi:
+- Rute Publik / Petugas:
+  GET  /                     -> petugas.index
+  POST /setoran              -> petugas.store
+  GET  /api/siswa-by-kelas   -> petugas.siswa-by-kelas
+
+- Rute Autentikasi:
+  GET  /login                -> login
+  POST /login                -> login.post
+  POST /logout               -> logout
+
+- Rute Khusus Administrator (Grup Prefix /admin dengan Middleware auth & admin):
+  GET    /admin                     -> admin.dashboard
+  DELETE /admin/laporan/{laporan}   -> admin.laporan.destroy
+  POST   /admin/laporan/clear-demo  -> admin.laporan.clear-demo
+  GET    /admin/laporan/export-csv  -> admin.laporan.export
+  GET    /admin/siswa               -> admin.siswa.index
+  POST   /admin/siswa               -> admin.siswa.store
+  PUT    /admin/siswa/{siswa}       -> admin.siswa.update
+  DELETE /admin/siswa/{siswa}       -> admin.siswa.destroy
+  POST   /admin/siswa/import        -> admin.siswa.import
+  GET    /admin/siswa/template      -> admin.siswa.template
+  GET    /admin/petugas             -> admin.petugas.index
+  POST   /admin/petugas             -> admin.petugas.store
+  PUT    /admin/petugas/{petugas}   -> admin.petugas.update
+  DELETE /admin/petugas/{petugas}   -> admin.petugas.destroy
+
+
+================================================================================
+LANGKAH 12: PEMBANGUNAN TAMPILAN UI/UX (BLADE VIEWS & CSS)
+================================================================================
+
+1. resources/css/app.css:
+   - Menerapkan desain Clean Clinical Dashboard dengan sentuhan Islamic Modern.
+   - Mendefinisikan variabel CSS kustom untuk konsistensi warna hijau tua (#06604d),
+     zamrud (#0b7a62), kanvas krem (#faf7f0), kartu putih, dan garis batas halus.
+   - Mengatur state interaktif: hover, active, focus-visible outline hijau tua 2px.
+   - Penataan responsif: grid 2 kolom di desktop yang otomatis reflow menjadi 1 kolom
+     di layar tablet dan smartphone.
+
+2. resources/views/layouts/app.blade.php:
+   - Kerangka master HTML5 dengan meta CSRF dan viewport cover.
+   - Header aplikasi dengan identitas MAN 1 Probolinggo dan logo Al-Qur'an.
+   - Pengalih peran (Petugas vs Admin) di bilah navigasi atas.
+   - Modal Cepat Login Admin (PIN input) dan Modal Konfirmasi Global (aksesibel).
+   - Penanganan tombol Escape global untuk menutup modal sesuai AntiSlop R-32.
+   - Komponen Toast notifikasi global.
+
+3. resources/views/petugas/index.blade.php:
+   - Formulir Catat Setoran: Pilihan kelas dinamis yang memfilter dropdown siswa
+     secara otomatis menggunakan JavaScript tanpa reload halaman.
+   - Integrasi AJAX form submit: Notifikasi toast langsung muncul dan kartu riwayat
+     setoran terbaru langsung disisipkan di posisi teratas riwayat.
+   - Tampilan angka nilai dengan tipografi serif Fraunces berukuran besar.
+   - Status empty state yang informatif bila belum ada riwayat.
+
+4. resources/views/admin/dashboard.blade.php:
+   - Kartu statistik dinamis (Total Laporan, Ziyadah, Murojaah).
+   - Banner pembersihan data demo awal bila masih ada data contoh.
+   - Bilah alat filter multi-kriteria dan tombol ekspor CSV Excel.
+   - Tabel responsif dengan pagination bawaan Laravel.
+
+5. resources/views/admin/siswa.blade.php:
+   - Formulir tambah siswa manual dan formulir impor massal (berkas / teks).
+   - Tombol unduh templat CSV siswa.
+   - Tabel/daftar siswa dengan inisial avatar, label kelas, jurusan, tahun ajaran.
+   - Modal edit siswa interaktif dan modal konfirmasi hapus.
+
+6. resources/views/admin/petugas.blade.php:
+   - Formulir penambahan petugas penyimak.
+   - Daftar petugas aktif dengan jumlah akumulasi setoran yang telah disimak.
+   - Modal edit nama petugas dan hapus petugas.
+
+7. resources/views/auth/login.blade.php:
+   - Halaman login mandiri bila pengguna mengakses /login langsung.
+
+
+================================================================================
+LANGKAH 13: KOMPILASI ASET FRONTEND DENGAN VITE
+================================================================================
+
+Memasang pustaka pendukung dan membuat berkas produksi:
+$ npm install
+$ npm run build
+
+Hasil kompilasi menghasilkan:
+- public/build/manifest.json
+- public/build/assets/app-*.css
+- public/build/assets/app-*.js
+Aset berhasil dibangun dan siap disajikan secara instan ke peramban.
+
+
+================================================================================
+LANGKAH 14: PENGUJIAN OTOMATIS & FORMATTER KODE
+================================================================================
+
+1. Pengujian Otomatis Fitur (PHPUnit):
+   Membuat berkas "tests/Feature/TahfidzReportTest.php" yang menguji 15 skenario:
+   - Rendering halaman petugas (200 OK).
+   - Penyimpanan laporan setoran oleh petugas.
+   - Penyimpanan via AJAX dan verifikasi data di database.
+   - Penolakan input yang tidak valid (validasi kolom wajib).
+   - Proteksi rute admin terhadap pengguna tanpa autentikasi (302 Redirect).
+   - Login admin menggunakan PIN.
+   - Login admin menggunakan Email dan Password.
+   - Akses dashboard admin dan unduhan berkas ekspor CSV.
+   - Penghapusan laporan setoran.
+   - Pengelolaan siswa (tambah, edit, hapus).
+   - Impor data siswa dari teks CSV.
+   - Pengelolaan petugas (tambah, edit, hapus).
+   - Pembersihan data demonstrasi awal.
+
+   Menjalankan test:
+   $ php artisan test
+   Hasil: 19 passed, 78 assertions, 0 failure (LULUS 100%).
+
+2. Standarisasi Format Kode (Laravel Pint):
+   Menjalankan pemformatan kode sesuai standar PSR-12 dan gaya resmi Laravel:
+   $ vendor/bin/pint --format agent
+
+
+================================================================================
+LANGKAH 15: PANDUAN MENJALANKAN DAN MENGGUNAKAN APLIKASI
+================================================================================
+
+A. Memastikan Layanan Aktif:
+   1. Buka Laragon dan pastikan Apache dan MySQL dalam status "Start".
+   2. Jalankan server Laravel:
+      $ php artisan serve --port=8000
+
+B. Akses Portal Petugas (Tanpa Login):
+   1. Buka peramban di alamat: http://127.0.0.1:8000 (atau http://tessting.test)
+   2. Header bersih hanya menampilkan logo dan identitas sekolah (menu petugas/admin/keluar di header telah dihapus).
+   3. Formulir siap digunakan untuk mencatat setoran hafalan siswa.
+
+C. Kredensial Login Administrator:
+   Akses URL Login Admin: http://127.0.0.1:8000/login
+   - Email: admin@man1probolinggo.sch.id
+   - Kata Sandi: admin123
+   - Atau menggunakan PIN Cepat: admin123
+
+
+================================================================================
+LANGKAH 16: FITUR PENGATURAN LOGO, GANTI KATA SANDI, & PEMBERSIHAN HEADER
+================================================================================
+
+1. Pembersihan Header (app.blade.php):
+   - Menu "Petugas", "Admin", dan "Keluar" pada header atas telah dihapus total.
+   - Header kini tampil minimalis, profesional, dan fokus pada identitas sekolah.
+   - Navigasi administrator dipindahkan ke dalam panel admin dan tautan footer.
+
+2. Fitur Ganti Logo (Foto / Gambar):
+   - Admin dapat membuka tab "Pengaturan & Akun" di panel admin.
+   - Mendukung unggah foto logo (PNG, JPG, JPEG, WEBP, SVG hingga 2 MB).
+   - Berkas otomatis disimpan di direktori "public/uploads/".
+   - Tersedia tombol "Kembalikan ke Logo Default" untuk mereset logo ke ikon Al-Qur'an (📖).
+
+3. Fitur Ganti Kata Sandi Admin:
+   - Formulir verifikasi kata sandi lama, kata sandi baru (minimal 6 karakter),
+     dan konfirmasi kata sandi baru.
+   - Sandi dienkripsi menggunakan algoritma Hash bcrypt yang aman.
+
+================================================================================
+SELESAI - APLIKASI SIAP DIGUNAKAN DI LINGKUNGAN PRODUKSI / SEKOLAH
+================================================================================
