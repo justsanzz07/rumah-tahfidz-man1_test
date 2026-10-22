@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: rumah-tahfidz-man1
+    runtime: docker
+    plan: free
+    region: singapore
+    envVars:
+      - key: APP_NAME
+        value: "Rumah Tahfidz MAN 1"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        value: base64:llUtlJuKAVeAG2k6mBtKABZtauzx3XHS5qoEKkO4pC4=
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /var/www/html/database/database.sqlite
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
