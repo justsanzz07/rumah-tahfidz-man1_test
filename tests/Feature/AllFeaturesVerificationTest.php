@@ -19,7 +19,9 @@ class AllFeaturesVerificationTest extends TestCase
     use RefreshDatabase;
 
     protected User $admin;
+
     protected Petugas $petugas;
+
     protected Siswa $siswa;
 
     protected function setUp(): void
@@ -58,7 +60,7 @@ class AllFeaturesVerificationTest extends TestCase
         $response->assertSee('Waktu Setoran');
         $response->assertSee('live-header-time');
         $response->assertSee('Buka Mushaf');
-        
+
         // Memastikan tombol Panel Admin dan Keluar TIDAK ada di header halaman petugas
         $response->assertDontSee('Masuk ke Panel Administrator');
         $response->assertDontSee('Keluar dari sesi administrator');
@@ -187,7 +189,7 @@ class AllFeaturesVerificationTest extends TestCase
         $response->assertSee('Tabel Rekapitulasi Laporan Setoran');
         $response->assertSee('Muhammad Rayhan');
         $response->assertSee('Al-Baqarah');
-        
+
         // Memastikan di header halaman admin TIDAK ada tombol Halaman Pendamping dan Keluar
         $response->assertDontSee('<span class="hamburger-label">Menu</span>', false);
 
@@ -257,17 +259,52 @@ class AllFeaturesVerificationTest extends TestCase
 
         $petugasBaru = Petugas::where('nama', 'Ustadzah Aisyah Humaira')->firstOrFail();
 
-        // 7b. Update Petugas
+        // 7b. Index Petugas dengan Petugas Baru (belum memiliki riwayat setoran)
+        $indexPage = $this->actingAs($this->admin)->get(route('admin.petugas.index'));
+        $indexPage->assertStatus(200);
+        $indexPage->assertSee('Ustadzah Aisyah Humaira');
+        $indexPage->assertSee('Belum ada catatan setoran');
+
+        // 7c. Update Petugas
         $update = $this->actingAs($this->admin)->put(route('admin.petugas.update', $petugasBaru), [
             'nama' => 'Ustadzah Aisyah Humaira, S.Pd.I',
         ]);
         $update->assertRedirect(route('admin.petugas.index'));
         $this->assertDatabaseHas('petugas', ['nama' => 'Ustadzah Aisyah Humaira, S.Pd.I']);
 
-        // 7c. Hapus Petugas
+        // 7d. Hapus Petugas
         $delete = $this->actingAs($this->admin)->delete(route('admin.petugas.destroy', $petugasBaru));
         $delete->assertRedirect(route('admin.petugas.index'));
         $this->assertDatabaseMissing('petugas', ['id' => $petugasBaru->id]);
+    }
+
+    /** 7b. Fitur Riwayat Penyimakan Petugas & Toggle Status Aktif */
+    public function test_petugas_riwayat_penyimakan_html_dan_ajax(): void
+    {
+        // Update status aktif ke false
+        $updateStatus = $this->actingAs($this->admin)->put(route('admin.petugas.update', $this->petugas), [
+            'nama' => $this->petugas->nama,
+            'is_active' => '0',
+        ]);
+        $updateStatus->assertRedirect(route('admin.petugas.index'));
+        $this->petugas->refresh();
+        $this->assertFalse($this->petugas->is_active);
+
+        // Akses halaman penuh riwayat petugas (HTML)
+        $riwayatView = $this->actingAs($this->admin)->get(route('admin.petugas.riwayat', $this->petugas));
+        $riwayatView->assertStatus(200);
+        $riwayatView->assertSee('Riwayat Penyimakan');
+        $riwayatView->assertSee($this->petugas->nama);
+
+        // Akses riwayat petugas via AJAX JSON
+        $riwayatJson = $this->actingAs($this->admin)->getJson(route('admin.petugas.riwayat', $this->petugas));
+        $riwayatJson->assertStatus(200);
+        $riwayatJson->assertJsonStructure([
+            'success',
+            'petugas' => ['id', 'nama', 'is_active', 'total_setoran', 'total_santri', 'avg_nilai'],
+            'data',
+            'pagination',
+        ]);
     }
 
     /** 8. Pengaturan Logo, Ganti Password, & Tombol Sesi Admin */

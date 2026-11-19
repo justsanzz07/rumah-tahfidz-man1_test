@@ -3,23 +3,26 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class AuthController extends Controller
 {
     /**
      * Tampilkan halaman login Admin.
+     * Wajib menampilkan form autentikasi dan tidak melakukan bypass/auto-redirect ke panel admin.
      */
-    public function showLogin(): View|RedirectResponse
+    public function showLogin(Request $request): View
     {
-        if (Auth::check() && Auth::user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
+        // Jika ada sesi login aktif saat membuka halaman login, bersihkan sesi
+        // agar pengguna wajib memasukkan kredensial autentikasi untuk masuk ke panel admin.
+        if (Auth::check()) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
         }
 
         return view('auth.login');
@@ -37,8 +40,9 @@ class AuthController extends Controller
 
         $email = $request->input('email');
         $password = $request->input('password');
+        $remember = $request->boolean('remember');
 
-        if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
             $request->session()->regenerate();
 
             if ($request->expectsJson()) {
@@ -75,7 +79,7 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('petugas.index')
+        return redirect()->route('login')
             ->with('success', 'Sesi admin telah ditutup.');
     }
 }

@@ -21,33 +21,49 @@
 
     <header class="app-header">
         <div class="header-container">
-            <div class="brand-wrapper">
-                @if ($appLogo && file_exists(public_path($appLogo)))
-                    <a href="{{ route('petugas.index') }}" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
-                        <img src="{{ asset($appLogo) }}" alt="Logo Laporan Rumah Tahfidz" class="brand-logo-img">
-                    </a>
-                @else
-                    <a href="{{ route('petugas.index') }}" class="brand-icon-box" aria-hidden="true" style="text-decoration: none;">
-                        <svg class="svg-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="rgba(255,255,255,0.08)" stroke="#dfc888"/>
-                            <path d="M6 6h10" stroke="#dfc888"/>
-                            <path d="M6 10h10" stroke="#dfc888"/>
-                            <path d="M6 14h7" stroke="#dfc888"/>
-                        </svg>
-                    </a>
-                @endif
-                <div class="brand-info">
-                    <small>
-                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                            <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
-                        </svg>
-                        MAN 1 PROBOLINGGO &middot; RUMAH TAHFIDZ
-                    </small>
-                    <h1><a href="{{ route('petugas.index') }}" style="color: inherit; text-decoration: none;">Laporan Rumah Tahfidz</a></h1>
+            <div class="header-main-row">
+                <div class="brand-wrapper">
+                    @if ($appLogo && file_exists(public_path($appLogo)))
+                        <a href="{{ route('wali.index') }}" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+                            <img src="{{ asset($appLogo) }}" alt="Logo Laporan Rumah Tahfidz" class="brand-logo-img">
+                        </a>
+                    @else
+                        <a href="{{ route('wali.index') }}" class="brand-icon-box" aria-hidden="true" style="text-decoration: none;">
+                            <svg class="svg-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" fill="rgba(255,255,255,0.08)" stroke="#dfc888"/>
+                                <path d="M6 6h10" stroke="#dfc888"/>
+                                <path d="M6 10h10" stroke="#dfc888"/>
+                                <path d="M6 14h7" stroke="#dfc888"/>
+                            </svg>
+                        </a>
+                    @endif
+                    <div class="brand-info">
+                        <small>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+                            </svg>
+                            MAN 1 PROBOLINGGO &middot; RUMAH TAHFIDZ
+                        </small>
+                        <h1><a href="{{ route('wali.index') }}" style="color: inherit; text-decoration: none;">Laporan Rumah Tahfidz</a></h1>
+                    </div>
                 </div>
+
+                @auth
+                    <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Buka Menu Navigasi" aria-expanded="false">
+                        <svg class="menu-icon-svg icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                        <svg class="menu-icon-svg icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                @endauth
             </div>
 
-            <div class="header-status" id="header-nav-menu">
+            <nav class="header-status" id="header-nav-menu" aria-label="Menu Navigasi">
                 <div class="header-nav-actions">
                     <!-- Tampilan Tanggal, Jam, dan Hari Live di Header -->
                     <div class="admin-live-datetime" id="admin-live-datetime" title="Tanggal, Hari dan Jam Nyata Sistem">
@@ -63,17 +79,39 @@
                         <span class="live-time" id="live-header-time">{{ now()->format('H:i:s') }} WIB</span>
                     </div>
 
-                    @if (request()->routeIs('login'))
-                        <a href="{{ route('petugas.index') }}" class="header-action-btn header-btn-ghost">
+                    @auth
+                        <a href="{{ route('admin.dashboard') }}" class="header-action-btn {{ request()->routeIs('admin.*') ? 'header-btn-gold' : 'header-btn-ghost' }}" title="Masuk ke Panel Pengendali Administrator">
                             <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="19" y1="12" x2="5" y2="12"/>
-                                <polyline points="12 19 5 12 12 5"/>
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
                             </svg>
-                            <span>Halaman Pendamping</span>
+                            <span>Panel Admin</span>
                         </a>
-                    @endif
+
+                        <div class="mobile-only-admin-nav">
+                            <div class="mobile-menu-heading">Menu Administrator</div>
+                            <a href="{{ route('admin.dashboard') }}" class="mobile-menu-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                                <span>Rekapitulasi Laporan</span>
+                            </a>
+                            <a href="{{ route('admin.siswa.index') }}" class="mobile-menu-item {{ request()->routeIs('admin.siswa.*') ? 'active' : '' }}">
+                                <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                <span>Kelola Siswa</span>
+                            </a>
+                            <a href="{{ route('admin.petugas.index') }}" class="mobile-menu-item {{ request()->routeIs('admin.petugas.*') ? 'active' : '' }}">
+                                <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3 3-2-2"/></svg>
+                                <span>Kelola Petugas</span>
+                            </a>
+                            <a href="{{ route('admin.setting.index') }}" class="mobile-menu-item {{ request()->routeIs('admin.setting.*') ? 'active' : '' }}">
+                                <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                <span>Pengaturan &amp; Akun</span>
+                            </a>
+                        </div>
+                    @endauth
                 </div>
-            </div>
+            </nav>
         </div>
     </header>
 
@@ -215,6 +253,10 @@
                 const customEditPetugasModal = document.getElementById('edit-petugas-modal');
                 if (customEditPetugasModal && customEditPetugasModal.classList.contains('active')) {
                     customEditPetugasModal.classList.remove('active');
+                }
+                const riwayatPetugasModal = document.getElementById('riwayat-petugas-modal');
+                if (riwayatPetugasModal && riwayatPetugasModal.classList.contains('active')) {
+                    riwayatPetugasModal.classList.remove('active');
                 }
             }
         });

@@ -56,6 +56,8 @@ class DashboardController extends Controller
         $totalLaporan = $allMatching->count();
         $totalZiyadah = $allMatching->where('kategori', 'Ziyadah')->count();
         $totalMurojaah = $allMatching->where('kategori', 'Murojaah')->count();
+        $avgNilai = $totalLaporan > 0 ? round((float) $allMatching->avg('nilai'), 1) : 0;
+        $totalSantriUnik = $allMatching->pluck('nama_siswa')->unique()->count();
 
         // Opsi filter
         $tahunOptions = LaporanSetoran::query()
@@ -83,6 +85,8 @@ class DashboardController extends Controller
             'totalLaporan' => $totalLaporan,
             'totalZiyadah' => $totalZiyadah,
             'totalMurojaah' => $totalMurojaah,
+            'avgNilai' => $avgNilai,
+            'totalSantriUnik' => $totalSantriUnik,
             'demoCount' => $demoCount,
             'tahunOptions' => $tahunOptions,
             'kelasOptions' => $kelasOptions,

@@ -24,6 +24,7 @@ class StorePetugasRequest extends FormRequest
     {
         return [
             'nama' => ['required', 'string', 'max:255'],
+            'is_active' => ['nullable', 'boolean'],
         ];
     }
 
@@ -36,6 +37,7 @@ class StorePetugasRequest extends FormRequest
     {
         return [
             'nama' => 'Nama petugas',
+            'is_active' => 'Status keaktifan',
         ];
     }
 

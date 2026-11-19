@@ -291,6 +291,17 @@
                         </td>
                         <td style="text-align: center; white-space: nowrap;">
                             <div style="display: inline-flex; gap: 6px;">
+                                <a href="{{ route('wali.show', $s) }}" 
+                                   target="_blank" 
+                                   class="btn-secondary btn-sm"
+                                   style="text-decoration: none;"
+                                   title="Lihat Buku Mutaba'ah & Riwayat Hafalan Siswa">
+                                    <svg class="svg-icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8"/>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                    </svg>
+                                    <span>Mutaba'ah</span>
+                                </a>
                                 <button type="button" 
                                         class="btn-secondary btn-sm"
                                         onclick="openEditSiswaModal({

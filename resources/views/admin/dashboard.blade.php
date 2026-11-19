@@ -92,7 +92,7 @@
             </div>
             <div>
                 <b>{{ $totalZiyadah }}</b>
-                <span>Setoran Ziyadah (Hafalan Baru)</span>
+                <span>Ziyadah (Hafalan Baru)</span>
             </div>
         </div>
         <div class="stat-box stat-gold">
@@ -104,7 +104,19 @@
             </div>
             <div>
                 <b>{{ $totalMurojaah }}</b>
-                <span>Setoran Murojaah (Pengulangan)</span>
+                <span>Murojaah (Pengulangan)</span>
+            </div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-icon-wrap" style="color: var(--pri-green); background-color: var(--soft-green);">
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="8" r="7"/>
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                </svg>
+            </div>
+            <div>
+                <b>{{ $avgNilai > 0 ? $avgNilai : '-' }}</b>
+                <span>Rerata Nilai ({{ $totalSantriUnik }} Santri)</span>
             </div>
         </div>
     </div>
